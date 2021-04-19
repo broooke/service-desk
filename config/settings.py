@@ -25,7 +25,7 @@ SECRET_KEY = '@ymgqdjmqamlcj1#(*0m)%v1^8@s5t$y+u0b)e%xs*#f#laxua'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['sd-favr.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
