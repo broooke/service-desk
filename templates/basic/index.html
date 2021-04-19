@@ -49,13 +49,13 @@
   {% if request.user.is_authenticated %}
   <ul class="navbar-nav px-3">
     <li class="nav-item text-nowrap">
-      <h6><a class="nav-link" href="">Выйти</a></h6>
+      <h6><a class="nav-link" href="{% url 'logout' %}">Выйти</a></h6>
     </li>
   </ul>
   {%else%}
   <ul class="navbar-nav px-3">
     <li class="nav-item text-nowrap">
-      <h6><a class="nav-link" href="">Войти</a></h6>
+      <h6><a class="nav-link" href="{% url 'login' %}">Войти</a></h6>
     </li>
   </ul>
   {%endif%}
@@ -72,7 +72,7 @@ add_task
         <ul class="nav flex-column">
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="/">
-              <span class="material-icons">business</span>
+              <span class="material-icons">task</span>
               Заявки
             </a>
           </li>
@@ -90,24 +90,13 @@ add_task
           </li>
           {% if request.user.is_authenticated %}
           <li class="nav-item">
-            {% if not request.user.last_name %}
-            <a class="nav-link" href="">
-              <span class="material-icons">manage_accounts</span>
-              {{request.user.first_name}}
+            <a class="nav-link" href="{% url 'admin-panel' %}">
+              <span class="material-icons">face</span>
+              Админ панель
             </a>
-            {% else %}
-            <a class="nav-link" href="">
-              <span class="material-icons">manage_accounts</span>
-              {{request.user.first_name}}
-            </a>
-            {% endif %}
           </li>
           {% endif %}
         </ul>
-
-        {% block sidebar %}
-
-        {% endblock %}
       </div>
     </nav>
 

@@ -1,0 +1,11 @@
+{% extends 'basic/index.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<br><br><br>
+<h1 class="text-center my-3">Вход в "АДМИН" аккаунт</h1>
+<form class="mx-auto" method="post">
+    {% csrf_token %}
+    {{form | crispy}}
+    <input type="submit" value="Войти" class="btn btn-primary mt-3">
+</form>
+{% endblock %}

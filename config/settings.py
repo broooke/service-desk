@@ -13,6 +13,8 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from django.urls import reverse_lazy
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -137,3 +139,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles/")
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
+
+LOGIN_REDIRECT_URL = reverse_lazy('applications')

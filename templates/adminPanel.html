@@ -1,0 +1,49 @@
+{% extends 'basic/index.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<br><br><br>
+<h1 class="text-center my-3">Зарегистрированные обращения пользователей</h1>
+<table class="table table-bordered mt-5">
+    <thead>
+        <tr>
+            <th>Документ</th>
+            <th>Тема</th>
+            <th>Описание</th>
+            <th>Адрес компьютера</th>
+            <th>Этаж</th>
+            <th>Кабинет</th>
+            <th>Сотрудник</th>
+            <th>Состояние</th>
+            <th>Услуга</th>
+            <th>Состав услуги</th>
+            <th>Выполнено</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for obj in object_list %}
+        <tr>
+            <td>Обращение №{{obj.id}} от {{obj.date_of_created}}</td>
+            <td>{{obj.topic}}</td>
+            <td>{{obj.text}}</td>
+            <td>{{obj.ip}}</td>
+            <td>{{obj.floor}}</td>
+            <td>{{obj.office}}</td>
+            <td>{{obj.user}}</td>
+            <td>{{obj.state}}</td>
+            <td>{{obj.service.name}}</td>
+            <td>{{obj.service_detail.name}}</td>
+            {% if obj.state == 'Выполнено' %}
+            <td class="text-center">
+                <button class="btn btn-success disabled">Выполнено</button>
+            </td>
+            {% else %}
+            <form action="{% url 'done-app' obj.id %}" method="post">
+                {% csrf_token %}
+                <td class="text-center"><button type="submit" class="btn btn-primary"><span class="material-icons">done</span></button></td>
+            </form>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
