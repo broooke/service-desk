@@ -1,10 +1,340 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'basic/index.html' %}
+{% block content %}
+<br><br><br>
+<div class="row">
+    <div class="col card p-0 mx-3">
+        <div class="card-header">
+            <h1 class="text-center">Зарегистрированные обращения</h1>
+        </div>
+        <div style="background:#e0e0de;" class="card-body d-flex justify-content-center">
+            <table style="border: 1px solid white;" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Документ</th>
+                        <td>Обращение №{{object.id}} от {{object.date_of_created}}</td>
+                    </tr>
+                    <tr>
+                        <th>Тема</th>
+                        <td>{{object.topic}}</td>
+                    </tr>
+                    <tr>
+                        <th>Описание</th>
+                        <td>{{object.text}}</td>
+                    </tr>
+                    <tr>
+                        <th>Адрес компьютера</th>
+                        <td>{{object.ip}}</td>
+                    </tr>
+                    <tr>
+                        <th>Этаж</th>
+                        <td>{{object.floor}}</td>
+                    </tr>
+                    <tr>
+                        <th>Кабинет</th>
+                        <td>{{object.office}}</td>
+                    </tr>
+                    <tr>
+                        <th>Сотрудник</th>
+                        <td>{{object.user}}</td>
+                    </tr>
+                    <tr>
+                        <th>Состояние</th>
+                        <td>{{object.state}}</td>
+                    </tr>
+                    <tr>
+                        <th>Услуга</th>
+                        <td>{{object.service.name}}</td>
+                    </tr>
+                    <tr>
+                        <th>Состав услуги</th>
+                        <td>{{object.service_detail.name}}</td>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
 
-</body>
-</html>
+
+
+    <style>
+.mytext{
+    border:0;padding:10px;background:whitesmoke;
+}
+.text{
+    width:75%;display:flex;flex-direction:column;
+}
+.text > p:first-of-type{
+    width:100%;margin-top:0;margin-bottom:auto;line-height: 13px;font-size: 12px;
+}
+.text > p:last-of-type{
+    width:100%;text-align:right;color:silver;margin-bottom:-7px;margin-top:auto;
+}
+.text-l{
+    float:left;padding-right:10px;
+}
+.text-r{
+    float:right;padding-left:10px;
+}
+.avatar{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:25%;
+    float:left;
+    padding-right:10px;
+}
+.macro{
+    margin-top:5px;width:85%;border-radius:5px;padding:5px;display:flex;
+}
+.msj-rta{
+    float:right;background:whitesmoke;
+}
+.msj{
+    float:left;background:white;
+}
+.frame{
+    background:#e0e0de;
+    height:450px;
+    overflow:hidden;
+    padding:0;
+}
+.frame > div:last-of-type{
+    position:absolute;bottom:5px;width:100%;display:flex;
+}
+.chat-ul {
+    width:100%;
+    list-style-type: none;
+    padding:18px;
+    position:absolute;
+    bottom:32px;
+    display:flex;
+    flex-direction: column;
+
+}
+.msj:before{
+    width: 0;
+    height: 0;
+    content:"";
+    top:-5px;
+    left:-14px;
+    position:relative;
+    border-style: solid;
+    border-width: 0 13px 13px 0;
+    border-color: transparent #ffffff transparent transparent;
+}
+.msj-rta:after{
+    width: 0;
+    height: 0;
+    content:"";
+    top:-5px;
+    left:14px;
+    position:relative;
+    border-style: solid;
+    border-width: 13px 13px 0 0;
+    border-color: whitesmoke transparent transparent transparent;
+}
+input:focus{
+    outline: none;
+}
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: #d4d4d4;
+}
+::-moz-placeholder { /* Firefox 19+ */
+    color: #d4d4d4;
+}
+:-ms-input-placeholder { /* IE 10+ */
+    color: #d4d4d4;
+}
+:-moz-placeholder { /* Firefox 18- */
+    color: #d4d4d4;
+}
+    </style>
+
+
+
+    <div class="col card p-0 mx-3">
+        <div class="card-header">
+            <h1 class="text-center">Чат с IT-отделом</h1>
+        </div>
+        <div style="background:#e0e0de;" class="card-body">
+                <div class="column col-sm-offset-4 frame">
+                        <ul id="chat-messages" style="max-height: 400px; overflow-y: scroll;" class="chat-ul">
+                            {% for m in messages %}
+                            {% if request.user.is_authenticated %}
+                                {% if m.username == 'IT-отдел' %}
+                                <li style="width:100%">
+                                    <div class="msj macro">
+                                        <div class="text text-l">
+                                            <p>{{m.content}}</p>
+                                            <p><small>{{m.username}}, {{m.date_added}}</small></p>
+                                        </div>
+                                    </div>
+                                </li>
+                                {% else %}
+                                <li style="width:100%">
+                                    <div class="msj-rta macro">
+                                        <div class="text text-r">
+                                            <p>{{m.content}}</p>
+                                            <p><small>{{m.username}}, {{m.date_added}}</small></p>
+                                        </div>
+                                    </div>
+                                </li>
+                                {% endif %}
+                            {% else %}
+                                {% if m.username == 'IT-отдел' %}
+                                <li style="width:100%">
+                                    <div class="msj-rta macro">
+                                        <div class="text text-r">
+                                            <p>{{m.content}}</p>
+                                            <p><small>{{m.username}}, {{m.date_added}}</small></p>
+                                        </div>
+                                    </div>
+                                </li>
+                                {% else %}
+                                <li style="width:100%">
+                                    <div class="msj macro">
+                                        <div class="text text-l">
+                                            <p>{{m.content}}</p>
+                                            <p><small>{{m.username}}, {{m.date_added}}</small></p>
+                                        </div>
+                                    </div>
+                                </li>
+                                {% endif %}
+                            {% endif %}
+
+                            {% endfor %}
+                        </ul>
+                        <div class="d-flex mr-3">
+                        <input id="chat-message-input" style="max-width:750px;" class="form-control" type="search" placeholder="Search" aria-label="Search">
+                            <a class="button btn-success text-center p-2" id="chat-message-submit">Отправить</a>
+                        </div>
+                </div>
+        </div>
+    </div>
+</div>
+
+{{ room_name|json_script:"json-roomname" }}
+{{ username|json_script:"json-username" }}
+
+<script>
+    function scrollToBottom() {
+                let objDiv = document.getElementById("chat-messages");
+                objDiv.scrollTop = objDiv.scrollHeight;
+            }
+
+            scrollToBottom();
+
+            const roomName = JSON.parse(document.getElementById('json-roomname').textContent);
+            const userName = JSON.parse(document.getElementById('json-username').textContent);
+
+            const chatSocket = new WebSocket(
+                'ws://'
+                + window.location.host
+                + '/ws/'
+                + roomName
+                + '/'
+            );
+
+            chatSocket.onmessage = function(e) {
+                const data = JSON.parse(e.data);
+
+                Data = new Date();
+                Year = Data.getFullYear();
+                Month = Data.getMonth();
+                Day = Data.getDate();
+                Hour = Data.getHours();
+                Minutes = Data.getMinutes();
+                Seconds = Data.getSeconds();
+
+                switch (Month){
+                  case 0: fMonth="января"; break;
+                  case 1: fMonth="февраля"; break;
+                  case 2: fMonth="марта"; break;
+                  case 3: fMonth="апреля"; break;
+                  case 4: fMonth="мае"; break;
+                  case 5: fMonth="июня"; break;
+                  case 6: fMonth="июля"; break;
+                  case 7: fMonth="августа"; break;
+                  case 8: fMonth="сентября"; break;
+                  case 9: fMonth="октября"; break;
+                  case 10: fMonth="ноября"; break;
+                  case 11: fMonth="декабря"; break;
+                }
+
+                if (data.username == 'IT-отдел'){
+                    var is_staff = "true"
+                }else{
+                    var is_staff = "false"
+                }
+
+                var is_auth = {{ request.user.is_authenticated|yesno:"true,false" }}
+                console.log(is_staff)
+                console.log(is_auth)
+
+                if (is_auth) {
+                    if (is_staff){
+                        control = ('<li style="width:100%">' +
+                            '<div class="msj macro">' +
+                                '<div class="text text-l">' +
+                                    '<p>'+ data.message +'</p>' +
+                                    '<p><small>'+data.username+ ', ' + Day + ' ' + fMonth + ' ' + Year + ' ' + Hour + ':' + Minutes + ':' + Seconds +'</small></p>' +
+                                '</div>' +
+                            '</div>' +
+                        '</li>');
+
+                    }
+                    else{
+                        control = ('<li style="width:100%">' +
+                            '<div class="msj-rta macro">' +
+                                '<div class="text text-r">' +
+                                    '<p>'+ data.message +'</p>' +
+                                    '<p><small>'+data.username+ ', ' + Day + ' ' + fMonth + ' ' + Year + ' ' + Hour + ':' + Minutes + ':' + Seconds +'</small></p>' +
+                                '</div>' +
+                            '</div>' +
+                        '</li>');
+
+                    }
+                } else {
+                    if (is_staff){
+                        control = ('<li style="width:100%">' +
+                            '<div class="msj-rta macro">' +
+                                '<div class="text text-r">' +
+                                    '<p>'+ data.message +'</p>' +
+                                    '<p><small>'+data.username+ ', ' + Day + ' ' + fMonth + ' ' + Year + ' ' + Hour + ':' + Minutes + ':' + Seconds +'</small></p>' +
+                                '</div>' +
+                            '</div>' +
+                        '</li>');
+
+                    }else{
+                        control = ('<li style="width:100%">' +
+                            '<div class="msj macro">' +
+                                '<div class="text text-l">' +
+                                    '<p>'+ data.message +'</p>' +
+                                    '<p><small>'+data.username+ ', ' + Day + ' ' + fMonth + ' ' + Year + ' ' + Hour + ':' + Minutes + ':' + Seconds +'</small></p>' +
+                                '</div>' +
+                            '</div>' +
+                        '</li>');
+                    }
+                }
+                document.querySelector('#chat-messages').innerHTML += control
+                scrollToBottom();
+            };
+
+            chatSocket.onclose = function(e) {
+                console.log('The socket close unexpectadly');
+            };
+
+            document.querySelector('#chat-message-submit').onclick = function(e) {
+                const messageInputDom = document.querySelector('#chat-message-input');
+                const message = messageInputDom.value;
+
+                chatSocket.send(JSON.stringify({
+                    'message': message,
+                    'username': userName,
+                    'room': roomName
+                }));
+
+                messageInputDom.value = '';
+            };
+</script>
+{% endblock %}

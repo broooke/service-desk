@@ -20,7 +20,7 @@
     <tbody>
         {% for obj in object_list %}
         <tr>
-            <td>Обращение №{{obj.id}} от {{obj.date_of_created}}</td>
+            <td><a href="{% url 'application-detail' obj.id %}">Обращение №{{obj.id}} от {{obj.date_of_created}}</a></td>
             <td>{{obj.topic}}</td>
             <td>{{obj.text}}</td>
             <td>{{obj.ip}}</td>

@@ -4,12 +4,20 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.urls import reverse_lazy
-from django.views.generic import ListView, TemplateView, CreateView
+from django.views.generic import ListView, TemplateView, CreateView, DetailView
 from django.views.generic.base import View
 
 from portal.forms import addApplicationForm
-from portal.models import Application
+from portal.models import Application, Message
 
+
+def get_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
 
 class ApplicationsView(ListView):
     template_name = 'applications.html'
@@ -69,6 +77,18 @@ class DoneApplicationView(View):
         application.save()
         return redirect('admin-panel')
 
+
+class ApplicationDetailView(DetailView):
+    template_name = 'applicationDetail.html'
+    model = Application
+    slug_field = 'id'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['messages'] = Message.objects.filter(room=self.get_object().id)
+        context['room_name'] = self.get_object().id
+        context['username'] = self.request.user.first_name if self.request.user.is_staff else get_ip(self.request)
+        return context
 
 
 

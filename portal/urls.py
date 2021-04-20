@@ -8,5 +8,6 @@ urlpatterns = [
     path('login/', views.SignInView.as_view(), name='login'),
     path('logout/', views.LogOutView.as_view(), name='logout'),
     path('panel/admin/', views.AdminPanelView.as_view(), name='admin-panel'),
-    path('done/application/<str:pk>/', views.DoneApplicationView.as_view(), name='done-app')
+    path('done/application/<str:pk>/', views.DoneApplicationView.as_view(), name='done-app'),
+    path('application/detail/<slug:slug>/', views.ApplicationDetailView.as_view(), name='application-detail')
 ]
