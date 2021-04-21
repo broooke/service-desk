@@ -62,7 +62,7 @@ class AddApplicationView(CreateView):
         form_save = form.save(commit=False)
         form_save.service = Service.objects.get(name=self.kwargs['name'])
         form_save.state = 'Зарегистрировано'
-        form_save.ip = self.request.META.get('REMOTE_ADDR')
+        form_save.ip = get_ip()
         form_save.save()
         return super().form_valid(form)
 
