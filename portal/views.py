@@ -12,11 +12,7 @@ from portal.models import Application, Message, Service
 
 
 def get_ip(request):
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]
-    else:
-        ip = request.META.get('REMOTE_ADDR')
+    ip = request.META.get('REMOTE_ADDR')
     return ip
 
 
@@ -27,11 +23,7 @@ class ApplicationsView(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         print(self.request.META)
-        x_forwarded_for = self.request.META.get('HTTP_X_FORWARDED_FOR')
-        if x_forwarded_for:
-            ip = x_forwarded_for.split(',')[0]
-        else:
-            ip = self.request.META.get('REMOTE_ADDR')
+        ip = self.request.META.get('REMOTE_ADDR')
         context['object_list'] = self.get_queryset().filter(ip=ip)
         return context
 
@@ -57,15 +49,12 @@ class AddApplicationView(CreateView):
         context['form'] = form
         return context
 
-    def form_valid(self, form):
+    def form_valid(self, form, **kwargs):
         """If the form is valid, save the associated model."""
         form_save = form.save(commit=False)
+        form_save.service = Service.objects.get(name=self.kwargs['name'])
         form_save.state = 'Зарегистрировано'
-        x_forwarded_for = self.request.META.get('HTTP_X_FORWARDED_FOR')
-        if x_forwarded_for:
-            form_save.ip = x_forwarded_for.split(',')[0]
-        else:
-            form_save.ip = self.request.META.get('REMOTE_ADDR')
+        form_save.ip = self.request.META.get('REMOTE_ADDR')
         form_save.save()
         return super().form_valid(form)
 
