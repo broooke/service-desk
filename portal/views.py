@@ -32,7 +32,7 @@ class ApplicationsView(ListView):
             ip = x_forwarded_for.split(',')[0]
         else:
             ip = self.request.META.get('REMOTE_ADDR')
-        context['object_list'] = self.get_queryset().filter(ip=ip)
+        context['object_list'] = self.get_queryset().filter(ip=x_forwarded_for)
         return context
 
 
