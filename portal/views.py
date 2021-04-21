@@ -12,7 +12,11 @@ from portal.models import Application, Message, Service
 
 
 def get_ip(request):
-    ip = request.META.get('REMOTE_ADDR')
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
     return ip
 
 
@@ -23,7 +27,11 @@ class ApplicationsView(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         print(self.request.META)
-        ip = self.request.META.get('REMOTE_ADDR')
+        x_forwarded_for = self.request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = self.request.META.get('REMOTE_ADDR')
         context['object_list'] = self.get_queryset().filter(ip=ip)
         return context
 
