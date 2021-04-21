@@ -234,10 +234,11 @@ input:focus{
                 + roomName
                 + '/'
             );
+            console.log('Connect')
 
             chatSocket.onmessage = function(e) {
                 const data = JSON.parse(e.data);
-
+                console.log('Message send!')
                 Data = new Date();
                 Year = Data.getFullYear();
                 Month = Data.getMonth();
