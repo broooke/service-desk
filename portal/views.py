@@ -8,7 +8,7 @@ from django.views.generic import ListView, TemplateView, CreateView, DetailView
 from django.views.generic.base import View
 
 from portal.forms import addApplicationForm
-from portal.models import Application, Message
+from portal.models import Application, Message, Service
 
 
 def get_ip(request):
@@ -18,6 +18,7 @@ def get_ip(request):
     else:
         ip = request.META.get('REMOTE_ADDR')
     return ip
+
 
 class ApplicationsView(ListView):
     template_name = 'applications.html'
@@ -33,14 +34,27 @@ class ApplicationsView(ListView):
         context['object_list'] = self.get_queryset().filter(ip=ip)
         return context
 
+
 class OthersView(TemplateView):
     template_name = 'other.html'
+
+
+class SelectServiceView(ListView):
+    template_name = 'chooseService.html'
+    model = Service
 
 
 class AddApplicationView(CreateView):
     template_name = 'addApplication.html'
     form_class = addApplicationForm
     success_url = reverse_lazy('applications')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        form = self.get_form()
+        form.fields['service_detail'].queryset = Service.objects.get(name=self.kwargs['name']).service_detail.all()
+        context['form'] = form
+        return context
 
     def form_valid(self, form):
         """If the form is valid, save the associated model."""

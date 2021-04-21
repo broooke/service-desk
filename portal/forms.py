@@ -6,4 +6,4 @@ class addApplicationForm(forms.ModelForm):
     class Meta:
         model = Application
         fields = '__all__'
-        exclude = ['ip', 'state']
+        exclude = ['ip', 'state', 'service']

@@ -12,7 +12,7 @@ class Service(models.Model):
 
 
 class ServiceDetail(models.Model):
-    service = models.ForeignKey(Service, on_delete=models.SET_NULL, verbose_name='Услуга', blank=True, null=True)
+    service = models.ForeignKey(Service, on_delete=models.SET_NULL, related_name='service_detail', verbose_name='Услуга', blank=True, null=True)
     name = models.CharField('Состав услуги', max_length=400, null=True, blank=True)
 
     def __str__(self):
