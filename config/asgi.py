@@ -14,11 +14,12 @@ from django.core.asgi import get_asgi_application
 
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
-
+import django
 import portal.routing
 
 os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
+django.setup()
 
 application = ProtocolTypeRouter({
     "http": get_asgi_application(),
