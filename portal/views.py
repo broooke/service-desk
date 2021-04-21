@@ -87,7 +87,7 @@ class ApplicationDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['messages'] = Message.objects.filter(room=self.get_object().id)
         context['room_name'] = self.get_object().id
-        context['username'] = self.request.user.first_name if self.request.user.is_staff else get_ip(self.request)
+        context['username'] = self.request.user.first_name if self.request.user.is_staff else self.get_object().user
         return context
 
 

@@ -272,7 +272,7 @@ input:focus{
                 console.log(is_auth)
 
                 if (is_auth) {
-                    if (is_staff){
+                    if (data.username == 'IT-отдел'){
                         control = ('<li style="width:100%">' +
                             '<div class="msj macro">' +
                                 '<div class="text text-l">' +
@@ -295,7 +295,7 @@ input:focus{
 
                     }
                 } else {
-                    if (is_staff){
+                    if (data.username == 'IT-отдел'){
                         control = ('<li style="width:100%">' +
                             '<div class="msj-rta macro">' +
                                 '<div class="text text-r">' +
